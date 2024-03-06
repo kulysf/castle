@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>?</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            transition: background-color 1s ease;
+        }
+
+        #gifContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #gifOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0);
+            transition: background-color 1s ease;
+        }
+
+        #gifContainer img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <!-- Müziği otomatik olarak çalacak ses nesnesi -->
+    <audio id="myAudio">
+        <source src="music.mp3" type="audio/mpeg">
+        Tarayıcınız ses etiketini desteklemiyorsa, müziği dinleyemezsiniz.
+    </audio>
+
+    <!-- Tam ekranı kaplayacak GIF ve overlay -->
+    <div id="gifContainer" style="display: none;">
+        <div id="gifOverlay"></div>
+        <img src="gif.gif" alt="GIF">
+    </div>
+
+    <!-- Kullanıcıdan etkileşim bekleyen bir düğme -->
+    <button id="toggleButton" onclick="toggleGif()">???</button>
+
+    <!-- JavaScript kodu ile müziği başlat ve düğmeyi sil -->
+    <script>
+function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error(`Tam ekran hatası: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+        var audio = document.getElementById("myAudio");
+        var gifContainer = document.getElementById("gifContainer");
+        var gifOverlay = document.getElementById("gifOverlay");
+        var toggleButton = document.getElementById("toggleButton");
+
+        function toggleGif() {
+            if (gifContainer.style.display === "none") {
+		toggleFullScreen()
+                audio.play();
+                gifContainer.style.display = "block";
+                toggleButton.style.display = "none";
+                gifOverlay.style.backgroundColor = "rgba(0, 0, 0, 1)";
+                setTimeout(function() {
+                    gifOverlay.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                }, 2000);
+            } else {
+                audio.pause();
+                gifContainer.style.display = "none";
+                toggleButton.style.display = "block";
+            }
+        }
+
+        audio.onended = function() {
+            gifOverlay.style.backgroundColor = "rgba(0, 0, 0, 1)";
+        };
+    </script>
+</body>
+</html>
